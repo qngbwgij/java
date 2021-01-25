@@ -1,0 +1,6 @@
+openssl genrsa -out ca.key 2048
+
+openssl req -new -key ca.key -out ca.csr
+
+openssl x509 -req -sha256 -days 3650 -in ca.csr                -signkey ca.key                    -out ca.crt
+openssl x509 -req -sha256 -days 3650 -in server.csr -CA ca.crt -CAkey ca.key    -CAcreateserial   -out server.crt

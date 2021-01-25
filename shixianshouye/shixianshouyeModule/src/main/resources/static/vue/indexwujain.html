@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script type="text/javascript" src="http://web.sanguosha.com/login/js/need/jquery-1.9.1.min.js"></script>
+<script>
+    //http://192.168.2.104:8080/
+    function crossdomaintest(a){
+        console.log(a);
+
+    $.ajax({
+        type: "GET",
+        url: a,
+        //data: {username:$("#username").val(), content:$("#content").val()},
+        //dataType: "json",
+        success: function(data){
+            // $('#resText').empty();   //清空resText里面的所有内容
+            // var html = '';
+            // $.each(data, function(commentIndex, comment){
+            //     html += '<div class="comment"><h6>' + comment['username']
+            //         + ':</h6><p class="para"' + comment['content']
+            //         + '</p></div>';
+            // });
+            // $('#resText').html(html);
+            console.log(data);
+        }
+    });
+    }
+</script>
+
+
+
+
+<script>
+    let count = 1;
+
+    function handleParam(data){
+      let url = ""
+      for (let key in data){
+          let value = data[key] != undefined ? data[key] : ""
+          url += "&${key} = ${encodeURIComponent(value)}"
+          return url
+      }
+    }
+
+    function originPJSONP(option) {
+        //1、从传入 的option中提取URL
+        const url = option.url;
+
+        //2、在body中添加script标签
+        const body = document.getElementsByTagName("body")[0]
+        const script = document.createElement("script");
+
+        //3、内部生产一个不重复的callback
+        const callback = "jsonp" + count++
+
+        //4、监听window上的jsonp的调用
+        return new Promise((resolve, reject) => {
+            try {
+                window[callback] = function (result) {
+                    body.removeChild(script);
+                    resolve(result)
+                }
+                const  params = handleParam(option.data);
+                script.src = url + "?callback=" + callback + params;
+                body.appendChild(script)
+            }
+            catch (e) {
+                body.removeChild(script)
+                reject(e)
+         }
+        })
+
+    }
+
+
+    const options = {
+        url: "http://web.sanguosha.com/login/js/dobest_login_jssdk.min.js",
+        data: {
+            name: "wujian",
+            age: 35
+        }
+    }
+
+    function clickevent(){
+        console.log("开始调用")
+        originPJSONP(options).then(result => console.log("成功" + result)).catch(a => console.log("失败" + a))
+        console.log("结束调用")
+    }
+
+</script>
+
+<center>
+    <h1>这是首页已修改</h1>
+    <button onclick="clickevent()">按钮</button>
+    ------------------------------------------------------------------------<br>
+    <span>URL：<input type="text" value="http://192.168.2.104:8080/" name="url"/></span>>
+    <button onclick="crossdomaintest(document.getElementsByTagName('input')[0].value)">跨域测试</button>
+</center>
+
+</body>
+</html>

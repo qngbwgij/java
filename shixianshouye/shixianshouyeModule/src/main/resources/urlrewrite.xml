@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.2//EN"
+        "http://tuckey.org/res/dtds/urlrewrite3.2.dtd">
+<urlrewrite>
+
+<!--        <name>seo redirect 301</name>
+        <condition name="host">^9191boke.com$</condition>
+        <from>^/(.*)</from>
+        <to type="permanent-redirect" last="true">http://www.9191boke.com/$1</to>
+    </rule>
+    <rule>
+        <name>seo redirect 301</name>
+        <condition name="host">^localhost:9191$</condition>
+        <from>^/(.*)</from>
+        <to type="permanent-redirect" last="true">http://www.localhost:9191/$1</to>
+    </rule>
+    <rule>
+        <from>^/([0-9]+).html$</from>
+        <to>/blogdetails/$1.html</to>
+    </rule>-->
+<!--    <rule>
+        <from>^/p_([0-9]+).html$</from>
+        <to>/?page=$1</to>
+    </rule>-->
+    <rule>
+        <from>/(.[0-9]*).html</from>
+        <to type="forward">/module?id=$1</to>
+    </rule>
+</urlrewrite>
